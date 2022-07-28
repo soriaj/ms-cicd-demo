@@ -15,9 +15,10 @@ In order to run the script you will need the following:
 - The files in this repo
 
 # Pre-script Setup
-- **Install Git and Github CLI**
+- Create a new Anypoint Studio Project
+- Install Git and Github CLI
   - Run `brew install git gh`
-- **Github Personal Access Token**
+- Github Personal Access Token
   - See [Creating a personal access token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token) for additional informaiton.
     - Set and select the following for your Personal Access Token:
       - Note: **NAME_YOUR_TOKEN**
@@ -37,7 +38,7 @@ In order to run the script you will need the following:
 
 <br>
 
-- **Docker Desktop**
+- Install Docker Desktop
   - See [Docker Desktop download](https://www.docker.com/products/docker-desktop/)
 
 
@@ -73,11 +74,12 @@ bash cicd-demo.sh ${PATH_TO_MULE_PROJECT} ${GITHUB_USERNAME} ${DOCKERHUB_USERNAM
 >       <environment>${environment}</environment>
 >       <region>${region}</region>
 >       <workers>${workers}</workers>
->       <workerType>MICRO</workerType>
+>       <workerType>${workerType}</workerType>
 >     </cloudHubDeployment>
 >   </configuration>
 > </plugin>
 >   ```
+>  NOTE: If using a trial account, Region and Workers (Quantity of workers) can be omitted and workerType will be MICRO. See example-pom.xml for a complete file.
 >  </details>
 
 <br>
@@ -116,7 +118,7 @@ bash cicd-demo.sh ${PATH_TO_MULE_PROJECT} ${GITHUB_USERNAME} ${DOCKERHUB_USERNAM
 9. In the **Build Steps** section click the **Add build step** drop down and select **Execute shell**.
 10. Add the following to the **Command** dialog box:
 ```sh
-mvn clean package deploy -DmuleDeploy -Dusername=$USERNAME -Dpassword=$PASSWORD -DmuleVersion=4.4.0 -Denvironment=Sandbox -DappName=$REPLACE_WITH_UNIQUE_APP_NAME
+mvn clean package deploy -DmuleDeploy -Dusername=$USERNAME -Dpassword=$PASSWORD -DmuleVersion=4.4.0 -Denvironment=Sandbox -DappName=$REPLACE_WITH_UNIQUE_APP_NAME -DworkerType=MICRO
 ```
 > NOTE: If you did not configure environment variables you can hardcode your username and password where required.
 
