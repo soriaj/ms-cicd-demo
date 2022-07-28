@@ -13,13 +13,6 @@ In order to run the script you will need the following:
 - Git
 - Github CLI and Github Personal Access Token
 - The files in this repo
-  - ```git
-    git clone https://github.com/soriaj/ms-cicd-demo
-
-    or with ssh
-
-    git clone git@github.com:soriaj/ms-cicd-demo.git
-    ```
 
 # Pre-script Setup
 - Create a new Anypoint Studio Project
