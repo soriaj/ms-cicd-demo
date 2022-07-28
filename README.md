@@ -1,5 +1,5 @@
-# CI-CD Demo Script
-## What Does the Script Do
+# CI-CD Demo
+## What Does This Do
 The script automates the followiing in order to demo a CI-CD workflow for deploying Mule apps into CloudHub.
 1. Creation of a Github repository based on the Anypoint project directory provided
 2. Generates and configures Github deploy keys, used for communication with Jenkins.
@@ -13,6 +13,13 @@ In order to run the script you will need the following:
 - Git
 - Github CLI and Github Personal Access Token
 - The files in this repo
+  - ```git
+    git clone https://github.com/soriaj/ms-cicd-demo
+
+    or with ssh
+
+    git clone git@github.com:soriaj/ms-cicd-demo.git
+    ```
 
 # Pre-script Setup
 - Create a new Anypoint Studio Project
@@ -86,7 +93,7 @@ bash cicd-demo.sh ${PATH_TO_MULE_PROJECT} ${GITHUB_USERNAME} ${DOCKERHUB_USERNAM
 
 # Configuring Jenkins for App Deployment
 ## Configure Environment Variables (optional)
-> This step can be optional depending on preference as you can hard code variables in the `mvn deploy` command shown later.
+> This step is optional depending on preference as you can hard code variables in the `mvn deploy` command used later.
 1. Open your browser to [http://localhost:8080](http://localhost:8080) and login to Jenkins using `admin` and `password`.
 2. From the Dashboard select **Manage Jenkins**
 ![Manage-Jenkins](./img/08-Manage-Jenkins.png)
