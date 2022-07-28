@@ -123,9 +123,7 @@ mvn clean package deploy -DmuleDeploy -Dusername=$USERNAME -Dpassword=$PASSWORD 
 > NOTE: If you did not configure environment variables you can hardcode your username and password where required.
 
 ![Build-Steps](./img/06-Build-Steps.png)
-11. Select **Save** to save the job.
-
-
+11. Select **Save** to save the job and return to the Dashboard as see the **Build History** project running or click **Build Now**.
 
 # Post Demo Cleanup
 The cleanup script will remove the running container, delete the created container image and prompt to delete the created Github Repo.
