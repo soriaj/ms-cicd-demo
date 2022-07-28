@@ -42,8 +42,6 @@ In order to run the script you will need the following:
 
 
 # Running the Script
-> TL;DR: You can watch a video setup [here](https://placeholder)
-
 Before runing the script you will need to have your `GITHUB_TOKEN` set. See **Github Personal Access Token** or **Alternative Method**.
 
 The `cicd-demo.sh` script takes three arguments. The first is the path to your Mule app (e.g. `~/AnypointStudio/studio-workspace/ci-cd-sample`). Second is your Github username. Third is any name, preferably your dockerhub username as this name is used to create the container image. e.g. `jasoria/jenkins:demo`).
