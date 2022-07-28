@@ -1,6 +1,6 @@
-# CI-CD Demo
+# CI/CD Demo
 ## What Does This Do
-The script automates the following in order to demo a CI-CD workflow for deploying Mule apps into CloudHub.
+The script automates the following in order to demo a CI/CD workflow for deploying Mule apps into CloudHub.
 1. Creation of a Private Github repository based on the Anypoint project directory provided
 2. Generates and configures Github deploy keys, used for communication with Jenkins.
 3. Creates and configures a Jenkins container image that is used to listen to a configured GitHub repository for deployments to CloudHub.
