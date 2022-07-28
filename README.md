@@ -3,7 +3,7 @@
 The script automates the followiing in order to demo a CI-CD workflow for deploying Mule apps into CloudHub.
 1. Creation of a Github repository based on the Anypoint project directory provided
 2. Generates and configures Github deploy keys, used for communication with Jenkins.
-3. Creates and configures a Docker Jenkins with Maven container image that is used to listen for the Git repository for deployments to CloudHub.
+3. Creates and configures a Jenkins container image that is used to listen to a configured GitHub repository for deployments to CloudHub.
 
 # Pre-requisites
 In order to run the script you will need the following:
