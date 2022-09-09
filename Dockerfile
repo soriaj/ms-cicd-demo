@@ -27,4 +27,4 @@ ENV MAVEN_HOME /opt/maven
 
 RUN chown -R jenkins:jenkins /opt/maven
 
-USER jenkins
+#USER jenkins
