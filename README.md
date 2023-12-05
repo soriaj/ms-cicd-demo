@@ -55,7 +55,7 @@ bash cicd-demo.sh ${PATH_TO_MULE_PROJECT} ${GITHUB_USERNAME} ${DOCKERHUB_USERNAM
 
 > NOTE: You will need to have your `settings.xml` and `pom.xml` configured to deploy. See [Configure the CloudHub Deployment Strategy](https://docs.mulesoft.com/mule-runtime/4.4/deploy-to-cloudhub#configure-the-cloudhub-deployment-strategy) for more information on deployment strategies. 
 > 
-> Examples: See [cloudhub-1.0--pom.xml](cloudhub-1.0-pom.xml) or [cloudhub-2.0-pom.xml](cloudhub-2.0-pom.xml) or snippet below.
+> Examples: See [cloudhub-1.0-pom.xml](cloudhub-1.0-pom.xml) or [cloudhub-2.0-pom.xml](cloudhub-2.0-pom.xml) or snippet below.
 > 
 > <details>
 >  <summary>Click here to see pom.xml snippet</summary>
