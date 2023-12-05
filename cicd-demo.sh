@@ -12,7 +12,10 @@ else
   RESPOSITORY=$(basename ${CODE_PATH})
 
   printf "\nBuilding container image"
-  docker build -t "${DOCKER_USERNAME}/jenkins:demo" -f Dockerfile .
+  nerdctl build -t "${DOCKER_USERNAME}/jenkins:demo" -f Dockerfile .
+
+  printf "\nCopy maven settings.xml\n"
+  printf ${CODE_PATH}
 
   printf "\nCreating Private GitHub repository and initializing local project\n"
   gh repo create ${RESPOSITORY} --private
@@ -28,5 +31,8 @@ else
   gh repo deploy-key add ${CURRENT_DIR}/id_rsa_jenkins.pub -t Jenkins
 
   printf "\nStarting Jenkins container on port 8080\n"
-  docker run -d --name jenkins -p 8080:8080 --env JENKINS_ADMIN_ID=admin --env JENKINS_ADMIN_PASSWORD=password ${DOCKER_USERNAME}/jenkins:demo
+  nerdctl run -d --name jenkins -p 8080:8080 --env JENKINS_ADMIN_ID=admin --env JENKINS_ADMIN_PASSWORD=password ${DOCKER_USERNAME}/jenkins:demo
+
+  printf "\nUpdating Jenksfile with Git Path\n"
+  sed -i '' "s/PATH/${RESPOSITORY}/g" ${CURRENT_DIR}/Jenkinsfile
 fi

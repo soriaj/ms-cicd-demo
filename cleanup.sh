@@ -14,12 +14,15 @@ else
   rm -rf .git
   cd ${CURRENT_DIR}
   printf "Deleting running jenkins container\n"
-  docker rm -f jenkins
+  nerdctl rm -f jenkins
   printf "Deleteing container jenkins:demo image\n"
-  docker rmi ${DOCKER_USERNAME}/jenkins:demo
+  nerdctl rmi ${DOCKER_USERNAME}/jenkins:demo
   printf "Deleting generated ssh keys\n"
   rm id_rsa_jenkins*
 
   printf "Deleting Github repository\n"
   gh repo delete github.com/${GIT_USER}/${RESPOSITORY}
+
+  printf "\nReset Jenksfile Git Path\n"
+  sed -i '' "s/${RESPOSITORY}/PATH/g" ${CURRENT_DIR}/Jenkinsfile
 fi

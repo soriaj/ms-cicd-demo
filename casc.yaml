@@ -3,21 +3,23 @@ jenkins:
     local:
       allowsSignup: false
       users:
-       - id: ${JENKINS_ADMIN_ID}
-         password: ${JENKINS_ADMIN_PASSWORD}
+        - id: ${JENKINS_ADMIN_ID}
+          password: ${JENKINS_ADMIN_PASSWORD}
   authorizationStrategy:
     globalMatrix:
       permissions:
         - "Overall/Administer:admin"
         - "Overall/Read:authenticated"
   remotingSecurity:
-      enabled: true
+    enabled: true
 
 security:
+  gitHostKeyVerificationConfiguration:
+    sshHostKeyVerificationStrategy: "acceptFirstConnectionStrategy"
   queueItemAuthenticator:
     authenticators:
-    - global:
-        strategy: triggeringUsersAuthorizationStrategy
+      - global:
+          strategy: triggeringUsersAuthorizationStrategy
 
 credentials:
   system:
@@ -31,6 +33,22 @@ credentials:
               privateKeySource:
                 directEntry:
                   privateKey: "${readFile:/.ssh/id_rsa_jenkins}"
+          - string:
+              scope: GLOBAL
+              id: "username"
+              secret: "${ANYPOINT_USERNAME}"
+              description: "Anypoint Username"
+          - string:
+              scope: GLOBAL
+              id: "password"
+              secret: "${ANYPOINT_PASSWORD}"
+              description: "Anypoint Password"
+          - strings:
+              scope: GLOBAL
+              id: "orgId"
+              secret: ${ANYPONT_ORGID}
+              description: "Anypoint Org Id"
+
 unclassified:
   location:
     url: http://localhost:8080/

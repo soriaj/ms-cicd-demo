@@ -1,4 +1,4 @@
-FROM jenkins/jenkins
+FROM jenkins/jenkins:jdk11
 
 ENV JAVA_OPTS -Djenkins.install.runSetupWizard=false
 ENV CASC_JENKINS_CONFIG /var/jenkins_home/casc.yaml
@@ -26,5 +26,3 @@ RUN chown -R jenkins:jenkins /.ssh/
 ENV MAVEN_HOME /opt/maven
 
 RUN chown -R jenkins:jenkins /opt/maven
-
-#USER jenkins

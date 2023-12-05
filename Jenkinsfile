@@ -1,15 +1,22 @@
 pipeline {
-
   agent any
   environment {
-    //adding a comment for the commit test
-    MULE_VERSION = '4.4.0'
-    WORKER = "Micro"
+    MULE_VERSION = '4.5.2'
+    WORKER = 'Micro' // Used for CloudHub 1.0
+    APP = 'cicddemo-v1'
+    USER = credentials('username')
+    PASSWORD = credentials('password')
   }
   stages {
-    stage('Build') {
+    stage('Declarative: Checkout SCM'){
+       steps {
+           git branch: 'main', credentialsId: 'jenkins_ssh', url: 'git@github.com:soriaj/PATH.git'
+       }
+    }
+
+    stage('Build Application') {
       steps {
-            sh 'mvn -B -U -e -V -X clean -DskipTests package'
+            sh 'mvn clean package -B -U -e -V -X -s .maven/settings.xml -DskipTests -Dusername=${USER} -Dpassword=${PASSWORD}'
       }
     }
 
@@ -18,24 +25,20 @@ pipeline {
             sh 'mvn test'
       }
     }
-
-    stage('Deploy Development') {
-      environment {
-        ENVIRONMENT = 'Sandbox'
-        APP_NAME = 'sandbox-{appName}-{initials}'
-      }
+    stage('Upload to Exchange') {
       steps {
-            sh 'mvn -B -U -e -V -X clean package deploy -DmuleDeploy -Dusername=$USERNAME -Dpassword=$PASSWORD -DmuleVersion=$MULE_VERSION -Denvironment=$ENVIRONMENT -DappName=$APP_NAME -DworkerType=$WORKER'
+          sh 'mvn deploy -B -U -e -V -X -s .maven/settings.xml -DskipTests -Dusername=${USER} -Dpassword=${PASSWORD}'
       }
     }
-    // make sure production environment is available or change name
-    stage('Deploy Production') {
+    
+    stage('Deploy to Sandbox') {
       environment {
-        ENVIRONMENT = 'Production'
-        APP_NAME = 'production-{appName}-{initials}'
+        ENVIRONMENT = 'Sandbox'
+        APP_NAME = 'sandbox-${APP}'
+        REGION = 'Cloudhub-US-West-1'
       }
       steps {
-            sh 'mvn -B -U -e -V -X clean package deploy -DmuleDeploy -Dusername=$USERNAME -Dpassword=$PASSWORD -DmuleVersion=$MULE_VERSION -Denvironment=$ENVIRONMENT -DappName=$APP_NAME -DworkerType=$WORKER'
+          sh 'mvn deploy -B -U -e -V -X -s .maven/settings.xml -DskipTests -DmuleDeploy -DmuleVersion=${MULE_VERSION} -Denvironment=${ENVIRONMENT} -DappName=${APP_NAME} -Dregion=${REGION} -Dusername=${USER} -Dpassword=${PASSWORD}'
       }
     }
   }
