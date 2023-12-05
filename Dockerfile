@@ -8,6 +8,7 @@ COPY plugins.txt /usr/share/jenkins/ref/plugins.txt
 RUN jenkins-plugin-cli -f /usr/share/jenkins/ref/plugins.txt
 
 COPY casc.yaml /var/jenkins_home/casc.yaml
+COPY batinstall.sh batinstall.sh
 
 USER root
 ENV VERSION="3.8.6"
@@ -19,6 +20,9 @@ RUN curl -o /tmp/apache-maven-${VERSION}-bin.tar.gz https://repo.maven.apache.or
   && ln -s /opt/maven/bin/mvn /usr/local/bin \
   && rm -f /tmp/apache-maven-${VERSION}-bin.tar.gz \
   && mkdir -p /.ssh
+
+# Install bat cli
+RUN bash batinstall.sh
 
 COPY ["id_rsa_jenkins", "id_rsa_jenkins.pub", "/.ssh/"]
 RUN chown -R jenkins:jenkins /.ssh/
