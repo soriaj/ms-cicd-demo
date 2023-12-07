@@ -49,7 +49,7 @@ In order to run the script you will need the following:
 
 # Running the Script
 1. Before runing the script you will need to have your `GITHUB_TOKEN` set in `~/.bashrc` or `~/.zshrc`. See **Github Personal Access Token** or **Alternative Method**. 
-2. Edit the `casc.yaml` and set your Anypoint `username` and `password` or edit afterwards within Jenkins (Configure > Credentials, select credential and click **Update**)
+2. Edit the `casc.yaml` and set your Anypoint `username` and `password` or edit afterwards within Jenkins (Manage Jenkins > Security > Credentials, select credential and click **Update**)
 ```yaml
           - string:
               scope: GLOBAL
@@ -155,7 +155,7 @@ pipeline {
   ...
 ```
 8. Update the `REGION` name for **Sandbox** and **Production** in the `Jenkinsfile`
-```json
+```bash
     stage('Deploy to Development') {
       environment {
         ENVIRONMENT = 'Sandbox'
