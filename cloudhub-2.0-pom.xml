@@ -4,7 +4,7 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>f098ca06-d912-4792-85d7-b4fd95105b89</groupId>
+  <groupId>${anypointordId}</groupId>
   <artifactId>product-api-v1</artifactId>
   <version>1.0.0-SNAPSHOT</version>
   <packaging>mule-application</packaging>
@@ -71,13 +71,6 @@
       <artifactId>mule-sockets-connector</artifactId>
       <version>1.2.3</version>
       <classifier>mule-plugin</classifier>
-    </dependency>
-    <dependency>
-      <groupId>f098ca06-d912-4792-85d7-b4fd95105b89</groupId>
-      <artifactId>product-api-js-12042023-v1</artifactId>
-      <version>1.0.1</version>
-      <classifier>raml</classifier>
-      <type>zip</type>
     </dependency>
     <dependency>
       <groupId>org.mule.modules</groupId>
