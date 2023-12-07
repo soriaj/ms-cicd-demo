@@ -76,6 +76,8 @@ stage('Declarative: Checkout SCM'){
 
 4. The `cicd-demo.sh` script takes three arguments. The first is the path to your Mule app (e.g. `~/AnypointStudio/studio-workspace/ci-cd-sample`). Second is your Github username. Third is any name, preferably your dockerhub username as this name is used to create the container image. e.g. `jasoria/jenkins:demo`).
 
+5. If using Docker Desktop change `nerdctl` command in the `cicd-demo.sh` to use `docker` command.
+
 Run the script as follows:
 
 ```sh
