@@ -11,11 +11,16 @@ else
   DOCKER_USERNAME=$3
   RESPOSITORY=$(basename ${CODE_PATH})
 
+  printf "\nCopy maven settings.xml to code directory....\n"
+  cp -R .maven ${CODE_PATH}
+  printf "\nSuccessfully copied settings.xml\n"
+
+  printf "\nCopy gitignore\n"
+  cp gitignore-template ${CODE_PATH}/.gitignore
+  printf "\nSuccessfully copied gitignore template\n"
+
   printf "\nBuilding container image"
   nerdctl build -t "${DOCKER_USERNAME}/jenkins:demo" -f Dockerfile .
-
-  printf "\nCopy maven settings.xml\n"
-  printf ${CODE_PATH}
 
   printf "\nCreating Private GitHub repository and initializing local project\n"
   gh repo create ${RESPOSITORY} --private

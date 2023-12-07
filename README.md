@@ -1,10 +1,14 @@
 # CI/CD Demo
 ## What Does This Do
 The script automates the following in order to demo a CI/CD workflow for deploying Mule apps into CloudHub.
-1. Creation of a Private Github repository based on the Anypoint project directory provided
+1. Creation of a Private Github repository based on the Anypoint project directory provided.
 2. Generates and configures Github deploy keys, used for communication with Jenkins.
 3. Creates and configures a Jenkins container image that is used to listen to a configured GitHub repository for deployments to CloudHub.
+4. Jenkinsfile will checkout, build, test, and deploy application to Sandbox and Production.
 
+> **NOTE:** Production deployment is optional. Edit/Remove Jenkinsfile stages that are not used/needed
+> If configurating functional monitoring, you will need your application endpoint url.
+>  
 # Pre-requisites
 In order to run the script you will need the following:
 
@@ -45,7 +49,7 @@ In order to run the script you will need the following:
 
 # Running the Script
 1. Before runing the script you will need to have your `GITHUB_TOKEN` set in `~/.bashrc` or `~/.zshrc`. See **Github Personal Access Token** or **Alternative Method**. 
-2. Edit the `casc.yaml` and set your Anypoint `username` and `password`
+2. Edit the `casc.yaml` and set your Anypoint `username` and `password` or edit afterwards within Jenkins (Configure > Credentials, select credential and click **Update**)
 ```yaml
           - string:
               scope: GLOBAL
@@ -59,7 +63,18 @@ In order to run the script you will need the following:
               description: "Anypoint Password"
 ```
 
-3. The `cicd-demo.sh` script takes three arguments. The first is the path to your Mule app (e.g. `~/AnypointStudio/studio-workspace/ci-cd-sample`). Second is your Github username. Third is any name, preferably your dockerhub username as this name is used to create the container image. e.g. `jasoria/jenkins:demo`).
+3. Edit the `Jenkinsfile` and add your github username in the **Declarative: Checkout SCM** stage.
+
+**Example:**
+```bash
+stage('Declarative: Checkout SCM'){
+       steps {
+           git branch: 'main', credentialsId: 'jenkins_ssh', url: 'git@github.com:{GITHUB_USERNAME}/PATH.git'
+       }
+    }
+```
+
+4. The `cicd-demo.sh` script takes three arguments. The first is the path to your Mule app (e.g. `~/AnypointStudio/studio-workspace/ci-cd-sample`). Second is your Github username. Third is any name, preferably your dockerhub username as this name is used to create the container image. e.g. `jasoria/jenkins:demo`).
 
 Run the script as follows:
 
@@ -67,7 +82,9 @@ Run the script as follows:
 bash cicd-demo.sh ${PATH_TO_MULE_PROJECT} ${GITHUB_USERNAME} ${DOCKERHUB_USERNAME}
 ```
 
-> **NOTE**: You will need to have your [`settings.xml`](.maven/settings.xml) and `pom.xml` configured to deploy. Example `settings.xml` file has been provided. Copy to your Studio project directory.
+> **NOTE**: Nexus EE repository is configured in the [`settings.xml`](.maven/settings.xml). Validate you have access prior to deploying. The setup script will copy the pre-configured `settings.xml` to your Studio project.
+> 
+> Additionally update your `pom.xml` for Cloudhub 2.0 deployment and OrgId in the `<groupId>` section. 
 > 
 > See [Configure the CloudHub Deployment Strategy](https://docs.mulesoft.com/mule-runtime/4.4/deploy-to-cloudhub#configure-the-cloudhub-deployment-strategy) for more information on deployment strategies. 
 > 
@@ -75,28 +92,33 @@ bash cicd-demo.sh ${PATH_TO_MULE_PROJECT} ${GITHUB_USERNAME} ${DOCKERHUB_USERNAM
 > 
 > 
 > <details>
->  <summary>Click here to see pom.xml snippet</summary>
+>  <summary>Click here to see Cloudhub 2.0 pom.xml snippet</summary>
 > 
 >   ```xml
 > <plugin>
->   <groupId>org.mule.tools.maven</groupId>
->   <artifactId>mule-maven-plugin</artifactId>
->   <version>${mule.maven.plugin.version}</version>
->   <extensions>true</extensions>
->   <configuration>
->     <cloudHubDeployment>
->       <uri>https://anypoint.mulesoft.com</uri>
->       <muleVersion>${muleVersion}</muleVersion>
->       <username>${username}</username>
->       <password>${password}</password>
->       <applicationName>${appName}</applicationName>
->       <environment>${environment}</environment>
->       <region>${region}</region>
->       <workers>${workers}</workers>
->       <workerType>${workerType}</workerType>
->     </cloudHubDeployment>
->   </configuration>
-> </plugin>
+>    <groupId>org.mule.tools.maven</groupId>
+>    <artifactId>mule-maven-plugin</artifactId>
+>    <version>${mule.maven.plugin.version}</version>
+>    <extensions>true</extensions>
+>    <configuration>
+>      <cloudhub2Deployment>
+>        <uri>https://anypoint.mulesoft.com</uri>
+>        <provider>MC</provider>
+>        <environment>${environment}</environment>
+>        <target>${region}</target>
+>        <muleVersion>${muleVersion}</muleVersion>
+>        <server>PrivateExchangeRepository</server>
+>        <username>${username}</username>
+>        <password>${password}</password>
+>        <applicationName>${appName}</applicationName>
+>        <replicas>1</replicas>
+>        <vCores>0.1</vCores>
+>        <deploymentSettings>
+>          <generateDefaultPublicUrl>true</generateDefaultPublicUrl>
+>        </deploymentSettings>
+>      </cloudhub2Deployment>
+>    </configuration>
+>  </plugin>
 >   ```
 >  NOTE: If using a trial account, Region and Workers (Quantity of workers) can be omitted and workerType will be MICRO. See example-pom.xml for a complete file.
 >  </details>
@@ -151,6 +173,28 @@ pipeline {
 > CloubHub 2.0 Region Examples:
 > - Cloudhub-US-West-1
 > - Cloudhub-US-East-1
+  
+9. Remove the `post` stage sections in the `Jenkinsfile` if no MUnit tests or Integrations tests are used.
+
+**Remove Example**:
+```bash
+      post {
+          always {
+            publishHTML (target: [
+                          allowMissing: false,
+                          alwaysLinkToLastBuild: false,
+                          keepAll: true,
+                          reportDir: 'target/site/munit/coverage',
+                          reportFiles: 'summary.html',
+                          reportName: "Code coverage"
+                      ]
+                    )
+          }
+        }
+```
+10. Save the Pipline.
+11. Click on **Build Now**
+
 
 # Post Demo Cleanup
 The cleanup script will remove the running container, delete the created container image and prompt to delete the created Github Repo.
@@ -166,7 +210,7 @@ Run:
 bash cleanup.sh ${PATH_TO_MULE_PROJECT} ${GITHUB_USERNAME} ${DOCKERHUB_USERNAME}
 ```
 
-When prompted enter the GitHub repository name to confirm deletion.
+When prompted enter the GitHub repository name (`soriaj/ci-cd-demo`) to confirm deletion.
 
 Example output below:
 ![Cleanup-Script](./img/11-Cleanup-Script.png)
