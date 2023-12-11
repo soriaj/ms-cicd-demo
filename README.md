@@ -7,12 +7,12 @@ The script automates the following in order to demo a CI/CD workflow for deployi
 4. Jenkinsfile will checkout, build, test, and deploy application to Sandbox and Production.
 
 > **NOTE:** Production deployment is optional. Edit/Remove Jenkinsfile stages that are not used/needed
-> If configurating functional monitoring, you will need your application endpoint url.
+> If configuring functional monitoring, you will need your application endpoint url.
 >  
 # Pre-requisites
 In order to run the script you will need the following:
 
-- Anypoint Studio and Platform Account 
+- Anypoint Studio and Anypoint Platform Account 
 - Docker Desktop or Rancher Desktop
 - Git
 - Github CLI and Github Personal Access Token
