@@ -89,7 +89,7 @@ pipeline {
     stage('Install Functional Monitoring') {
         steps {
             sh 'bat login --username=${USER} --password=${PASSWORD}'
-            sh 'bat schedule endpoint https://production-${APP}-{YOUR_REGION_ID}.cloudhub.io/api/product --name=production-${APP} --email-list=xxxx@email.com --location=us-east-1'
+            sh 'bat schedule endpoint https://{YOUR_API_ENDPOINT_ADDRESS} --name=production-${APP} --email-list=xxxx@email.com --location=us-east-1'
         }
     }
   }
