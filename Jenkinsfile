@@ -22,7 +22,7 @@ pipeline {
 
     stage('Test') {
       steps {
-            sh 'mvn test'
+            sh 'mvn test -B -U -e -V -X -s .maven/settings.xml -Dusername=${USER} -Dpassword=${PASSWORD}'
       }
       post {
           always {

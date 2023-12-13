@@ -23,7 +23,7 @@ else
   nerdctl build -t "${DOCKER_USERNAME}/jenkins:demo" -f Dockerfile .
 
   printf "\nStarting Jenkins container on port 8080\n"
-  nerdctl run -d --name jenkins -p 8080:8080 --env JENKINS_ADMIN_ID=admin --env JENKINS_ADMIN_PASSWORD=password ${DOCKER_USERNAME}/jenkins:demo
+  nerdctl run -d --name jenkins -p 8080:8080 --env JENKINS_ADMIN_ID=admin --env JENKINS_ADMIN_PASSWORD=password -v ${PWD}/logs:/data ${DOCKER_USERNAME}/jenkins:demo
   
   printf "\nCreating Private GitHub repository and initializing local project\n"
   gh repo create ${RESPOSITORY} --private
